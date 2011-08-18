@@ -1,14 +1,13 @@
 //
-//  NSArray+Filtering.m
-//  GneXcode4Tmpl
+//  NSArray+Momentum.m
 //
-//  Created by Randy Cabral on 8/11/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Created by Randolph Cabral on 8/11/11.
+//  Copyright 2011 Randolph Cabral. All rights reserved.
 //
 
-#import "NSArray+Query.h"
+#import "NSArray+Momentum.h"
 
-@implementation NSArray (Query)
+@implementation NSArray (Momentum)
 
 
 - (id) where:(id (^)(id))predicate
