@@ -10,16 +10,13 @@
 
 @interface NSArray()
 - (NSArray *) parseOrderByExpression: (NSString *) expressionToParse;
-- (NSComparisonResult) comparator: (id) exprTuple;
 @end
 
 @implementation NSArray(Momentum)
 
 - (void) forin:(void (^)(id))action
 {
-    for (id obj in self) {
-        action(obj);
-    }
+    for (id obj in self) { action(obj); }
 }
 
 - (NSArray *) where:(id (^)(id))predicate
@@ -33,23 +30,23 @@
 
 - (NSArray *) orderBy: (NSString *) expression
 {
-    NSMutableArray * retval = [[NSMutableArray alloc] initWithArray:self copyItems:YES];
+    NSMutableArray * retval = [[[NSMutableArray alloc] initWithArray:self] autorelease];
     [retval sortUsingDescriptors: [self parseOrderByExpression:expression]];
     return retval;
 }
-
+   
 - (NSArray *) parseOrderByExpression: (NSString *) expressionToParse
 {
     NSMutableArray * retval = [[[NSMutableArray alloc] init] autorelease];
-    NSArray * exprParts = [[expressionToParse componentsSeparatedByString:@","] retain];
+    NSArray * exprParts = [expressionToParse componentsSeparatedByString:@","];
     [exprParts forin:^(id item) {
         NSArray * currentExprParts = [item componentsSeparatedByString:@" "]; 
         NSString * propertyName = [[currentExprParts objectAtIndex:0] trim];
-        BOOL sortAscending = ([[[currentExprParts objectAtIndex:1] trim] uppercaseString] == @"ASC");
+        NSString * sortString = [[[currentExprParts objectAtIndex:1] trim] uppercaseString];
+        BOOL sortAscending = [sortString isEqualToString:@"ASC"];
         NSSortDescriptor * descriptor = [[[NSSortDescriptor alloc] initWithKey:propertyName ascending:sortAscending] autorelease];
         [retval addObject: descriptor];
     }]; 
-    [expressionToParse release];
     return retval;
 }
 
